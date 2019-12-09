@@ -1,0 +1,88 @@
+# List all properties and objects associated with the country “India”
+SELECT ?country ?prop ?pop
+	WHERE {
+		?country a dbo:Country .
+		?country rdfs:label "India"@en.
+		?country ?prop ?pop.
+	}
+
+
+# List the population of country “India”
+SELECT ?country ?pop
+	WHERE {
+		?country a dbo:Country .
+		?country rdfs:label "India"@en .
+		?country dbo:populationTotal ?pop.
+	}
+
+
+# List the populations of all countries, where the country name is in German
+SELECT ?country ?pop ?name
+	WHERE {
+		?country a dbo:Country .
+		?country rdfs:label ?name .
+		?country dbo:populationTotal ?pop.
+		FILTER (lang(?name) = "de").
+	}
+
+
+# List all countries with population greater than 10,0000,000
+SELECT ?country ?name  ?pop
+	WHERE {
+		?country a dbo:Country .
+		?country rdfs:label ?name.
+		?country dbo:populationTotal ?pop.
+		FILTER (?pop > 100000000).
+	}
+
+
+# List all countries with population greater than 10,0000,000, and their capital cities
+SELECT ?country ?name  ?pop ?cap
+	WHERE {
+		?country a dbo:Country .
+		?country rdfs:label ?name.
+		?country dbo:populationTotal ?pop.
+		FILTER (?pop > 100000000).
+		FILTER (lang(?name) = "en").
+		?country dbo:capital ?cap.
+	}
+
+
+# List all countries with population greater than 10,0000,000, and the names of their capital cities
+SELECT ?country ?name  ?pop ?cap ?capitalname
+	WHERE {
+		?country a dbo:Country .
+		?country rdfs:label ?name.
+		?country dbo:populationTotal ?pop.
+		FILTER (?pop > 100000000).
+		FILTER (lang(?name) = "en").
+		?country dbo:capital ?cap.
+		?cap rdfs:label ?capitalname.
+	}
+
+
+# List 10 countries with population greater than 10,0000,000, and the names of their capital cities
+SELECT  ?name  ?pop ?capitalname
+	WHERE {
+		?country a dbo:Country .
+		?country rdfs:label ?name.
+		?country dbo:populationTotal ?pop.
+		FILTER (?pop > 100000000).
+		FILTER (lang(?name) = "en").
+		?country dbo:capital ?cap.
+		?cap rdfs:label ?capitalname.
+	}
+LIMIT 10
+
+
+# List 10 countries with population greater than 10,0000,000, OR name of the country is in English, along with the names of their capital cities
+SELECT  ?name  ?pop ?capitalname
+	WHERE {
+		?country a dbo:Country .
+		?country rdfs:label ?name.
+		?country dbo:populationTotal ?pop.
+		FILTER ((?pop > 100000000) || (lang(?name) = "en")).
+		?country dbo:capital ?cap.
+		?cap rdfs:label ?capitalname.
+	}
+LIMIT 10
